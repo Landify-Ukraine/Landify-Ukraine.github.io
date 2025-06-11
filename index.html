@@ -39,10 +39,6 @@
       height: 28px;
       margin-left: 8px;
     }
-    .contact-right img[alt="WhatsApp RO"] {
-      width: 28px;
-      height: 28px;
-    }
     .header .title {
       flex-grow: 1;
       text-align: center;
@@ -54,31 +50,26 @@
       right: 10px;
       background: white;
       border: 1px solid #ccc;
-      padding: 6px 10px;
+      padding: 8px 12px;
       font-size: 14px;
-      line-height: 1.4em;
-      border-radius: 5px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+      line-height: 1.5em;
+      border-radius: 6px;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
     }
-    .legend span {
-      display: inline-block;
-      width: 14px;
-      height: 14px;
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    .legend-item:last-child {
+      margin-bottom: 0;
+    }
+    .legend-icon {
+      width: 16px;
+      height: 26px;
       margin-right: 6px;
-      border-radius: 50%;
     }
-    .legend .green { background: green; }
-    .legend .yellow { background: gold; }
   </style>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GBY1G4B8K8"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag("js", new Date());
-    gtag("config", "G-GBY1G4B8K8");
-  </script>
 </head>
 <body>
   <div class="header">
@@ -95,7 +86,7 @@
     <div class="contact-right">
       <span>+40 730 429 377</span>
       <a href="https://wa.me/40730429377" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp RO" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp RO" style="width: 28px; height: 28px;" />
       </a>
       <a href="tel:+40730429377">
         <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" alt="Phone RO" />
@@ -104,8 +95,14 @@
   </div>
   <div id="map"></div>
   <div class="legend">
-    <div><span class="green"></span> Land only</div>
-    <div><span class="yellow"></span> Land with house</div>
+    <div class="legend-item">
+      <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png" class="legend-icon" alt="Land Only" />
+      Land only
+    </div>
+    <div class="legend-item">
+      <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png" class="legend-icon" alt="With House" />
+      Land with house
+    </div>
   </div>
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script>
