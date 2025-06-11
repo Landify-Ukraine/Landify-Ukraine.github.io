@@ -16,7 +16,7 @@
     }
     #map {
       width: 100%;
-      height: calc(100vh - 60px);
+      height: calc(100vh - 80px);
     }
     .header {
       display: flex;
@@ -27,6 +27,7 @@
       color: white;
       font-size: 16px;
       font-weight: bold;
+      position: relative;
     }
     .contact-left,
     .contact-right {
@@ -44,30 +45,28 @@
       text-align: center;
       font-size: 20px;
     }
-    .legend {
+    .legend-top {
       position: absolute;
-      bottom: 10px;
-      right: 10px;
+      top: 100%;
+      left: 10px;
       background: white;
       border: 1px solid #ccc;
-      padding: 8px 12px;
-      font-size: 14px;
-      line-height: 1.5em;
-      border-radius: 6px;
-      box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+      padding: 5px 10px;
+      font-size: 13px;
+      border-radius: 5px;
+      margin-top: 5px;
+      box-shadow: 0 0 4px rgba(0,0,0,0.2);
+      display: flex;
+      gap: 10px;
     }
     .legend-item {
       display: flex;
       align-items: center;
-      margin-bottom: 5px;
-    }
-    .legend-item:last-child {
-      margin-bottom: 0;
     }
     .legend-icon {
       width: 16px;
       height: 26px;
-      margin-right: 6px;
+      margin-right: 5px;
     }
   </style>
 </head>
@@ -86,29 +85,33 @@
     <div class="contact-right">
       <span>+40 730 429 377</span>
       <a href="https://wa.me/40730429377" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp RO" style="width: 28px; height: 28px;" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp RO" />
       </a>
       <a href="tel:+40730429377">
         <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" alt="Phone RO" />
       </a>
     </div>
+
+    <!-- Верхняя легенда -->
+    <div class="legend-top">
+      <div class="legend-item">
+        <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png" class="legend-icon" alt="Land Only" />
+        Land only
+      </div>
+      <div class="legend-item">
+        <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png" class="legend-icon" alt="With House" />
+        Land with house
+      </div>
+    </div>
   </div>
+
   <div id="map"></div>
-  <div class="legend">
-    <div class="legend-item">
-      <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png" class="legend-icon" alt="Land Only" />
-      Land only
-    </div>
-    <div class="legend-item">
-      <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png" class="legend-icon" alt="With House" />
-      Land with house
-    </div>
-  </div>
+
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script>
     var map = L.map("map").setView([50.4501, 30.5234], 8);
 
-    L.tileLayer("https://api.maptiler.com/maps/basic-v2/256/{z}/{x}/{y}.png?key=Sabbf1k43gkkWiuzzUFp", {
+    L.tileLayer("https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}.png?key=Sabbf1k43gkkWiuzzUFp&language=en", {
       attribution: '&copy; <a href="https://www.maptiler.com/copyright/" target="_blank">MapTiler</a>'
     }).addTo(map);
 
@@ -163,7 +166,7 @@
             Price: ${plot.price}<br>
             Size: ${plot.size}<br>
             Distance to Kyiv: ${plot.distance}<br>
-            <a href="#" onclick="window.location.href='${plot.link}'; return false;">More details</a>
+            <a href="${plot.link}" target="_blank">More details</a>
           `);
 
           if (window.innerWidth > 768) {
