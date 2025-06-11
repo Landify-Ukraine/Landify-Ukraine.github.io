@@ -39,22 +39,36 @@
       height: 28px;
       margin-left: 8px;
     }
+    .contact-right img[alt="WhatsApp RO"] {
+      width: 28px;
+      height: 28px;
+    }
     .header .title {
       flex-grow: 1;
       text-align: center;
       font-size: 20px;
     }
-    .lang-switch {
+    .legend {
       position: absolute;
-      top: 5px;
+      bottom: 10px;
       right: 10px;
-    }
-    .lang-switch a {
-      color: white;
-      text-decoration: none;
-      margin: 0 5px;
+      background: white;
+      border: 1px solid #ccc;
+      padding: 6px 10px;
       font-size: 14px;
+      line-height: 1.4em;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
     }
+    .legend span {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      margin-right: 6px;
+      border-radius: 50%;
+    }
+    .legend .green { background: green; }
+    .legend .yellow { background: gold; }
   </style>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GBY1G4B8K8"></script>
   <script>
@@ -88,14 +102,17 @@
       </a>
     </div>
   </div>
-  <!-- <div class="lang-switch"><a href="index-ua.html">UA Version</a></div> -->
   <div id="map"></div>
+  <div class="legend">
+    <div><span class="green"></span> Land only</div>
+    <div><span class="yellow"></span> Land with house</div>
+  </div>
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script>
     var map = L.map("map").setView([50.4501, 30.5234], 8);
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: '&copy; OpenStreetMap contributors'
+    L.tileLayer("https://api.maptiler.com/maps/basic-v2/256/{z}/{x}/{y}.png?key=Sabbf1k43gkkWiuzzUFp", {
+      attribution: '&copy; <a href="https://www.maptiler.com/copyright/" target="_blank">MapTiler</a>'
     }).addTo(map);
 
     var landIcon = new L.Icon({
@@ -117,17 +134,12 @@
     var landOnly = [
       { coords: [49.818339, 30.991579], name: "Ocheretyane", price: "$4,900", size: "0.52 ha", distance: "60 km", link: "#", visible: true },
       { coords: [49.912627, 31.020779], name: "Vyselka", price: "$5,500", size: "0.36 ha", distance: "54 km", link: "#", visible: true },
-      { coords: [50.177453, 29.923875], name: "Dorogynka", price: "$7,500", size: "0.26 ha", distance: "55 km", link: "#", visible: true },
-      { coords: [49.729015, 30.618115], name: "Sharki", price: "$7,500", size: "0.27 ha", distance: "68 km", link: "#", visible: false },
-      { coords: [49.769642, 31.547382], name: "Keleberda", price: "$1,500", size: "0.10 ha", distance: "115 km", link: "#", visible: false }
+      { coords: [50.177453, 29.923875], name: "Dorogynka", price: "$7,500", size: "0.26 ha", distance: "55 km", link: "#", visible: true }
     ];
 
     var landWithHouse = [
       { coords: [50.101612, 30.664250], name: "Obukhiv", price: "$14,000", size: "0.20 ha", distance: "16 km", link: "#", visible: true },
-      { coords: [49.632752, 31.546075], name: "Mykhailivka", price: "$10,000", size: "1 ha", distance: "120 km", link: "#", visible: true },
-      { coords: [50.175413, 29.918489], name: "Dorogynka House", price: "$7,900", size: "0.36 ha", distance: "55 km", link: "#", visible: false },
-      { coords: [49.955224, 29.669791], name: "Stavyshche House", price: "$5,900", size: "0.25 ha", distance: "80 km", link: "#", visible: false },
-      { coords: [50.020240, 29.788665], name: "Volytsia House", price: "$5,000", size: "0.25 ha", distance: "80 km", link: "#", visible: false }
+      { coords: [49.632752, 31.546075], name: "Mykhailivka", price: "$10,000", size: "1 ha", distance: "120 km", link: "#", visible: true }
     ];
 
     function addMarkers(group, icon) {
