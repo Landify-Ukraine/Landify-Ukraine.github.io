@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <title>Interactive Map of Land Plots for Sale</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
@@ -118,9 +118,6 @@
   <script>
     var map = L.map("map").setView([50.4501, 30.5234], 8);
 
-    // Важно! Принудительно обновляем размер карты, чтобы она корректно отображалась всегда:
-    setTimeout(() => map.invalidateSize(), 500);
-
     L.tileLayer("https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}.png?key=Sabbf1k43gkkWiuzzUFp&language=en", {
       attribution: '&copy; <a href="https://www.maptiler.com/copyright/" target="_blank">MapTiler</a>'
     }).addTo(map);
@@ -195,6 +192,16 @@
 
     addMarkers(landOnly, landIcon);
     addMarkers(landWithHouse, houseIcon);
+
+    // --- Исправление для мобильных: ---
+    function fixMapSize() {
+      setTimeout(() => { map.invalidateSize(); }, 400);
+    }
+    window.addEventListener('load', fixMapSize);
+    window.addEventListener('resize', fixMapSize);
+    window.addEventListener('orientationchange', fixMapSize);
+    // Для особо "тяжёлых" случаев (очень медленный мобильный интернет) можно раскомментировать ниже:
+    // setTimeout(fixMapSize, 1200);
   </script>
 </body>
 </html>
