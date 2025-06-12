@@ -118,6 +118,9 @@
   <script>
     var map = L.map("map").setView([50.4501, 30.5234], 8);
 
+    // Важно! Принудительно обновляем размер карты, чтобы она корректно отображалась всегда:
+    setTimeout(() => map.invalidateSize(), 500);
+
     L.tileLayer("https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}.png?key=Sabbf1k43gkkWiuzzUFp&language=en", {
       attribution: '&copy; <a href="https://www.maptiler.com/copyright/" target="_blank">MapTiler</a>'
     }).addTo(map);
@@ -169,11 +172,11 @@
         if (plot.visible) {
           let marker = L.marker(plot.coords, { icon: icon }).addTo(map);
           marker.bindPopup(
-            <b>${plot.name}</b><br>
+            `<b>${plot.name}</b><br>
             Price: ${plot.price}<br>
             Size: ${plot.size}<br>
             Distance to Kyiv: ${plot.distance}<br>
-            <a href="${plot.link}" target="_blank">More details</a>
+            <a href="${plot.link}" target="_blank">More details</a>`
           );
 
           if (window.innerWidth > 768) {
@@ -189,3 +192,9 @@
         }
       });
     }
+
+    addMarkers(landOnly, landIcon);
+    addMarkers(landWithHouse, houseIcon);
+  </script>
+</body>
+</html>
