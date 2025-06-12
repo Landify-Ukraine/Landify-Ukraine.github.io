@@ -168,13 +168,13 @@
       group.forEach(plot => {
         if (plot.visible) {
           let marker = L.marker(plot.coords, { icon: icon }).addTo(map);
-          marker.bindPopup(`
+          marker.bindPopup(
             <b>${plot.name}</b><br>
             Price: ${plot.price}<br>
             Size: ${plot.size}<br>
             Distance to Kyiv: ${plot.distance}<br>
             <a href="${plot.link}" target="_blank">More details</a>
-          `);
+          );
 
           if (window.innerWidth > 768) {
             marker.on('mouseover', function () {
@@ -189,9 +189,3 @@
         }
       });
     }
-
-    addMarkers(landOnly, landIcon);
-    addMarkers(landWithHouse, houseIcon);
-  </script>
-</body>
-</html>
