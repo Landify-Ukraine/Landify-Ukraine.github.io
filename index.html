@@ -5,7 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <title>Interactive Map of Land Plots for Sale</title>
+  
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -115,12 +120,17 @@
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+
   <script>
     var map = L.map("map").setView([50.4501, 30.5234], 8);
 
     L.tileLayer("https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}.png?key=Sabbf1k43gkkWiuzzUFp&language=en", {
       attribution: '&copy; <a href="https://www.maptiler.com/copyright/" target="_blank">MapTiler</a>'
     }).addTo(map);
+
+    // Создаем группу кластеров
+    var markers = L.markerClusterGroup();
 
     var landIcon = new L.Icon({
       iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png",
@@ -139,54 +149,72 @@
     });
 
     var landOnly = [
-      { coords: [49.818339, 30.991579], name: "Ocheretyane", price: "$4,900", size: "0.52 ha", distance: "60 km", link: "#", visible: true
+       { coords: [49.818339, 30.991579], name: "Ocheretyane", price: "$4,900", size: "0.52 ha", distance: "60 km", link: "#", visible: true
       },
-      { coords: [49.955224, 29.669791], name: "Stavysche-25", price: "$7,500", size: "0.25 ha", distance: "80 km", link: "https://25sotok-unava-river-3rwob4u.gamma.site/", visible: true },
-      { coords: [50.177420, 29.923875], name: "Dorogynka", price: "$9,000", size: "0.26 ha", distance: "55 km", link: "https://tranquil-village-plot-55-yk35a3v.gamma.site/", visible: true },
-      { coords: [50.101330, 30.664819], name: "Derevyannaya", price: "$8,500", size: "0.10 ha", distance: "14 km", link: "https://2-adjacent-plots-in-dere-m177jvu.gamma.site/", visible: true },
-      { coords: [49.818338, 30.991289], name: "Ocheretyane", price: "$4,000", size: "0.23 ha", distance: "60 km", link: "https://vlasnyj-lis-bilya-ozera-x06oj38.gamma.site/", visible: true },
-      { coords: [49.844932, 30.341834], name: "Mala Antonivka", price: "$6,500", size: "0.50 ha", distance: "75 km", link: "https://land-plots-derevyannaya-vgvfrqt.gamma.site/", visible: true },
-      { coords: [50.096876, 30.361080], name: "Barakhty", price: "$6,900", size: "0.16 ha", distance: "35 km", link: "https://product-designer-x6zuvog.gamma.site/", visible: true },
-      { coords: [50.304277, 30.027028], name: "Mostyshche 15", price: "$7,500", size: "0.15 ha", distance: "26 km", link: "https://15-sotkas-of-your-own-fo-5a0ksju.gamma.site/", visible: true },
-      { coords: [50.281123, 30.036294], name: "Mostyshche 25", price: "$8,500", size: "0.25 ha", distance: "26 km", link: "https://understanding-land-plots-1svq0i0.gamma.site/", visible: true },
-      { coords: [50.501285, 29.619656], name: "Nezhelovychi", price: "$8,500", size: "0.594 ha", distance: "50 km", link: "https://nezhelovychi-tt26nnh.gamma.site/", visible: true }
+       { coords: [49.955224, 29.669791], name: "Stavysche-25", price: "$7,500", size: "0.25 ha", distance: "80 km", link: "https://25sotok-unava-river-3rwob4u.gamma.site/", visible: true },
+       { coords: [50.177420, 29.923875], name: "Dorogynka", price: "$9,000", size: "0.26 ha", distance: "55 km", link: "https://tranquil-village-plot-55-yk35a3v.gamma.site/", visible: true },
+       { coords: [50.101330, 30.664819], name: "Derevyannaya", price: "$8,500", size: "0.10 ha", distance: "14 km", link: "https://2-adjacent-plots-in-dere-m177jvu.gamma.site/", visible: true },
+       { coords: [49.818338, 30.991289], name: "Ocheretyane", price: "$4,000", size: "0.23 ha", distance: "60 km", link: "https://vlasnyj-lis-bilya-ozera-x06oj38.gamma.site/", visible: true },
+       { coords: [49.844932, 30.341834], name: "Mala Antonivka", price: "$6,500", size: "0.50 ha", distance: "75 km", link: "https://land-plots-derevyannaya-vgvfrqt.gamma.site/", visible: true },
+       { coords: [50.096876, 30.361080], name: "Barakhty", price: "$6,900", size: "0.16 ha", distance: "35 km", link: "https://product-designer-x6zuvog.gamma.site/", visible: true },
+       { coords: [50.304277, 30.027028], name: "Mostyshche 15", price: "$7,500", size: "0.15 ha", distance: "26 km", link: "https://15-sotkas-of-your-own-fo-5a0ksju.gamma.site/", visible: true },
+       { coords: [50.281123, 30.036294], name: "Mostyshche 25", price: "$8,500", size: "0.25 ha", distance: "26 km", link: "https://understanding-land-plots-1svq0i0.gamma.site/", visible: true },
+       { coords: [50.501285, 29.619656], name: "Nezhelovychi", price: "$8,500", size: "0.594 ha", distance: "50 km", link: "https://nezhelovychi-tt26nnh.gamma.site/", visible: true }
     ];
 
     var landWithHouse = [
-      { coords: [49.861464, 30.356766], name: "Mala Antonivka", price: "$8,500", size: "0.25 ha", distance: "57 km", link: "https://riverside-land-plot-6mhz88r.gamma.site/", visible: true },
-      { coords: [49.632752, 31.546075], name: "Mykhailivka", price: "$10,000", size: "1 ha", distance: "120 km", link: "#", visible: false },
-      { coords: [49.650000, 31.500000], name: "House 3", price: "$11,000", size: "0.50 ha", distance: "118 km", link: "#", visible: false },
-      { coords: [49.640000, 31.510000], name: "House 4", price: "$12,000", size: "0.48 ha", distance: "119 km", link: "#", visible: false },
-      { coords: [49.630000, 31.520000], name: "House 5", price: "$13,000", size: "0.52 ha", distance: "121 km", link: "#", visible: false },
-      { coords: [49.620000, 31.530000], name: "House 6", price: "$9,500", size: "0.45 ha", distance: "122 km", link: "#", visible: false },
-      { coords: [49.610000, 31.540000], name: "House 7", price: "$10,500", size: "0.47 ha", distance: "123 km", link: "#", visible: false },
-      { coords: [49.600000, 31.550000], name: "House 8", price: "$9,800", size: "0.49 ha", distance: "124 km", link: "#", visible: false },
-      { coords: [49.590000, 31.560000], name: "House 9", price: "$9,900", size: "0.44 ha", distance: "125 km", link: "#", visible: false },
-      { coords: [49.580000, 31.570000], name: "House 10", price: "$9,700", size: "0.46 ha", distance: "126 km", link: "#", visible: false }
+       { coords: [49.861464, 30.356766], name: "Mala Antonivka", price: "$8,500", size: "0.25 ha", distance: "57 km", link: "https://riverside-land-plot-6mhz88r.gamma.site/", visible: true },
+       { coords: [49.632752, 31.546075], name: "Mykhailivka", price: "$10,000", size: "1 ha", distance: "120 km", link: "#", visible: false },
+       { coords: [49.650000, 31.500000], name: "House 3", price: "$11,000", size: "0.50 ha", distance: "118 km", link: "#", visible: false },
+       { coords: [49.640000, 31.510000], name: "House 4", price: "$12,000", size: "0.48 ha", distance: "119 km", link: "#", visible: false },
+       { coords: [49.630000, 31.520000], name: "House 5", price: "$13,000", size: "0.52 ha", distance: "121 km", link: "#", visible: false },
+       { coords: [49.620000, 31.530000], name: "House 6", price: "$9,500", size: "0.45 ha", distance: "122 km", link: "#", visible: false },
+       { coords: [49.610000, 31.540000], name: "House 7", price: "$10,500", size: "0.47 ha", distance: "123 km", link: "#", visible: false },
+       { coords: [49.600000, 31.550000], name: "House 8", price: "$9,800", size: "0.49 ha", distance: "124 km", link: "#", visible: false },
+       { coords: [49.590000, 31.560000], name: "House 9", price: "$9,900", size: "0.44 ha", distance: "125 km", link: "#", visible: false },
+       { coords: [49.580000, 31.570000], name: "House 10", price: "$9,700", size: "0.46 ha", distance: "126 km", link: "#", visible: false }
     ];
 
     function addMarkers(group, icon) {
       group.forEach(plot => {
         if (plot.visible) {
-          let marker = L.marker(plot.coords, { icon: icon }).addTo(map);
-          marker.bindPopup(
-            `<b>${plot.name}</b><br>
+          let marker = L.marker(plot.coords, { icon: icon });
+          
+          let popupContent = `<b>${plot.name}</b><br>
             Price: ${plot.price}<br>
             Size: ${plot.size}<br>
             Distance to Kyiv: ${plot.distance}<br>
-            <a href="${plot.link}" target="_blank">More details</a>`
-          );
+            <a href="${plot.link}" target="_blank">More details</a>`;
+            
+          marker.bindPopup(popupContent);
 
+          // УЛУЧШЕНИЕ: Логика для удержания popup открытым
+          let popupMouseOut;
           if (window.innerWidth > 768) {
             marker.on('mouseover', function () {
+              clearTimeout(popupMouseOut);
               this.openPopup();
             });
+
             marker.on('mouseout', function () {
-              setTimeout(() => {
+              popupMouseOut = setTimeout(() => {
                 this.closePopup();
-              }, 1000);
+              }, 500); // Задержка в 500 мс
+            });
+            
+            marker.getPopup().on('mouseover', function() {
+              clearTimeout(popupMouseOut);
+            });
+            
+            marker.getPopup().on('mouseout', function() {
+               popupMouseOut = setTimeout(() => {
+                marker.closePopup();
+              }, 500);
             });
           }
+          
+          // Добавляем маркер в группу кластеров вместо карты
+          markers.addLayer(marker);
         }
       });
     }
@@ -194,15 +222,15 @@
     addMarkers(landOnly, landIcon);
     addMarkers(landWithHouse, houseIcon);
 
-    // --- Исправление для мобильных: ---
+    // Добавляем группу кластеров на карту
+    map.addLayer(markers);
+
     function fixMapSize() {
       setTimeout(() => { map.invalidateSize(); }, 400);
     }
     window.addEventListener('load', fixMapSize);
     window.addEventListener('resize', fixMapSize);
     window.addEventListener('orientationchange', fixMapSize);
-    // Для особо "тяжёлых" случаев (очень медленный мобильный интернет) можно раскомментировать ниже:
-    // setTimeout(fixMapSize, 1200);
   </script>
 </body>
 </html>
